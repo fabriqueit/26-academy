@@ -6,26 +6,26 @@ from pymongo import MongoClient
 from _version import __version__
 
 
-def get_bracelet_id():
-    response = requests.get('http://localhost/id')
+def get_bracelet_id(api_bracelet):
+    response = requests.get('http://{}/id'.format(api_bracelet))
     return str(response.json()['id'])
 
 
-def get_bracelet_footstep(collection):
+def get_bracelet_footstep(api_bracelet, collection):
     threading.Timer(3600, get_bracelet_footstep, [collection]).start()
 
-    bracelet_id = get_bracelet_id()
-    response = requests.get('http://localhost/footstep/' + bracelet_id)
+    bracelet_id = get_bracelet_id(api_bracelet)
+    response = requests.get('http://{}/footstep/'.format(api_bracelet) + bracelet_id)
     print(response)
 
     collection.find_one_and_update({'id': bracelet_id}, {"$set": response.json()}, upsert=True)
 
 
-def get_bracelet_heartbeat(collection):
+def get_bracelet_heartbeat(api_bracelet, collection):
     threading.Timer(10, get_bracelet_heartbeat, [collection]).start()
 
-    bracelet_id = get_bracelet_id()
-    response = requests.get('http://localhost/heartbeat/' + bracelet_id)
+    bracelet_id = get_bracelet_id(api_bracelet)
+    response = requests.get('http://{}/heartbeat/'.format(api_bracelet) + bracelet_id)
     print(response)
 
     collection.find_one_and_update({'id': bracelet_id}, {"$push": response.json()}, upsert=True)
@@ -41,6 +41,7 @@ def main():
     parser.add_argument('-D', '--database', help='Name used to connect to the Mongo database', type=str)
     parser.add_argument('-u', '--user', help='User used to connect to the Mongo database', type=str)
     parser.add_argument('-p', '--password', help='Password used to connect to the Mongo database', type=str)
+    parser.add_argument('-A', '--api_hostname', help='Hostname used to connect to API-bracelet', type=str, default="localhost")
 
     args = parser.parse_args()
 
@@ -49,16 +50,17 @@ def main():
     database = args.database
     user = args.user
     password = args.password
+    api_bracelet = args.api_hostname
 
-    # Init connexion to mongodb mongodb+srv://26academy:<PASSWORD>@cluster0-bihus.mongodb.net/test?retryWrites=true
+    # Init connexion to mongodb
+    # for exemple : mongodb+srv://26academy:<PASSWORD>@cluster0-bihus.mongodb.net/test?retryWrites=true
     client = MongoClient('mongodb://{}:{}@{}:{}'.format(user, password, hostname, port))
-    client = MongoClient('mongodb+srv://26academy:26academy@cluster0-bihus.mongodb.net/test?retryWrites=true')
     
     database = client[database]
     collection = database['bracelet']
 
-    get_bracelet_footstep(collection)
-    get_bracelet_heartbeat(collection)
+    get_bracelet_footstep(api_bracelet, collection)
+    get_bracelet_heartbeat(api_bracelet, collection)
 
 # =====================================
 # MAIN : Entrypoint of the program
