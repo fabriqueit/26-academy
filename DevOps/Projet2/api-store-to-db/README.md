@@ -5,4 +5,4 @@ Projet tutoré n°2 concernant le parcours DevOps
 pip install -r requirements.txt
 
 ## Démarer l'API 
-python main.py -H mon_serveur_mongo -P 27017 -D ma_database_mongo -u mon_user_mongo -p mon_password_mongo
+python main.py -H mon_serveur_mongo -P 27017 -D ma_database_mongo -u mon_user_mongo -p mon_password_mongo -A mon_api_bracelet
