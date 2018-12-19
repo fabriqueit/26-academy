@@ -5,4 +5,4 @@ Projet tutoré n°2 concernant le parcours DevOps
 pip install -r requirements.txt
 
 ## Démarer l'API 
-python main.py
+python \_\_main\_\_.py -H 0.0.0.0

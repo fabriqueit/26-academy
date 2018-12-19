@@ -26,7 +26,7 @@ def main():
     parser = argparse.ArgumentParser()
     # Add each available arguments
     parser.add_argument('-v', '--version', action='version', version='%(prog)s ' + __version__)
-    parser.add_argument('-H', '--hostname', help='Hostname used to expose the API', type=str, default="localhost")
+    parser.add_argument('-H', '--hostname', help='Hostname used to expose the API', type=str, default="0.0.0.0")
     parser.add_argument('-p', '--port', help='Port used to expose the API', type=int, default=80, choices=range(1, 65535))
 
     args = parser.parse_args()
