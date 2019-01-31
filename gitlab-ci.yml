@@ -1,0 +1,17 @@
+before_script: # Exécution d'une commande avant chaque `job`
+  - echo 'Démarrage des jobs'
+
+after_script: # Exécution d'une commande après chaque `job`
+  - echo 'Fin des jobs'
+
+stages: # Ici on déclare toutes nos étapes
+  - build
+  - deploy
+
+job:build:
+  stage: build # On déclare que ce `job` fait partie de l'étape build ==> automatiser le build, et le push sur un repository de vos images docker
+  script: make build
+
+job:deploy:
+  stage: deploy # On déclare que ce `job` fait partie de l'étape deploy ==> déploiement dans un environnement rancher de production
+  script: make deploy
