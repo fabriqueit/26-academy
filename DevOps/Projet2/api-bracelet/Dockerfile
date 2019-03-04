@@ -1,7 +1,10 @@
 FROM python
 
-ADD _main_.py /
+ADD __main__.py /
 ADD _version.py /
 ADD requirements.txt /
+
 RUN pip install -r requirements.txt
-RUN _main_.py -H 0.0.0.0
+RUN /__main__.py -H 0.0.0.0
+
+
