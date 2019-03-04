@@ -6,6 +6,4 @@ ADD requirements.txt /
 
 RUN pip install -r requirements.txt
 RUN chmod u+x __main__.py
-RUN /__main__.py -H 0.0.0.0
-
-
+CMD /__main__.py -H 0.0.0.0
